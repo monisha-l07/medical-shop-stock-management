@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en"> <!-- Changed lang to en -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Stock - Discount Pharmacy</title> <!-- Updated Title -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <!-- Favicon -->
+    <link rel="icon" href="discount pharmacy.png" type="image/x-icon">
+    <!-- Consistent Theme Styles -->
+    <link rel="stylesheet" href="newstyles.css">
+    <style>
+
+        /* Page content wrapper */
+        .page-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            z-index: 1;
+            position: relative;
+            width: 100%;
+        }
+
+        /* Main Heading Style */
+        h2 {
+            color: white; /* Heading above container should be white */
+            font-size: 36px;
+            font-weight: 700;
+            text-align: center;
+            margin: 30px 0 50px 0; /* Reset margin-top */
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            letter-spacing: 1px;
+        }
+
+        /* Form Container Styling (Adapted from previous examples) */
+        .form-container {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 35px 45px; /* Adjusted padding */
+            max-width: 550px; /* Appropriate width for this form */
+            width: 90%;       /* Responsive width */
+            margin: 0 auto 40px auto;
+            z-index: 2;
+        }
+
+        /* Styling for form elements inside */
+        .form-container form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* Spacing between form elements */
+        }
+
+        .form-group {
+             display: flex;
+             flex-direction: column;
+             gap: 5px; /* Space between label and input */
+        }
+
+        .form-container label {
+            font-weight: 600;
+            color: var(--text);
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        .form-container input[type="text"],
+        .form-container input[type="number"] {
+            width: 100%;
+            padding: 10px 15px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.8);
+            color: var(--text);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-container input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.2);
+        }
+
+        .form-container button[type="submit"] { /* Specificity for submit button */
+            padding: 12px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 15px; /* Space above the button */
+            width: 100%; /* Make button full width */
+        }
+
+        .form-container button[type="submit"]:hover {
+            background-color: #1565C0;
+            transform: translateY(-2px);
+        }
+
+        /* --- Remove unused styles from original CSS --- */
+         /* input { ... } */
+         /* button { ... } */
+         /* button:hover { ... } */
+         /* .container { ... } - Replaced by .form-container */
+
+    </style>
+</head>
+<body>
+    <!-- Background decorative elements -->
+    <div class="bg-circles">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+    </div>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                 <!-- Updated logo link with image -->
+                <a href="medical shop.html">
+                    <img src="discount pharmacy.png" alt="Discount Pharmacy">
+                    <span>DISCOUNT PHARMACY</span>
+                </a>
+            </div>
+            <div class="nav-links">
+                <a href="medical shop.html">Home</a>
+                <a href="sales_report.html">Reports</a>
+                <a href="expiry_check.html">Expiry</a>
+                <!-- Added Contact link from source theme -->
+            </div>
+            <div class="user-menu" tabindex="0">
+                <div class="user-icon">
+                    <!-- Added icon -->
+                    <i class="bi bi-person-fill"></i>
+                </div>
+                <div class="dropdown-card">
+                    <!-- Updated logout button -->
+                    <a href="login.html" class="logout-btn">
+                        <i class="bi bi-box-arrow-right"></i>
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Wrap main content -->
+    <main class="page-content">
+        <h2>Update Existing Stock</h2> <!-- Updated H2 text -->
+
+        <!-- Use the themed container class -->
+        <div class="form-container">
+            <!-- Added form tag -->
+            <form>
+                 <!-- Added form-group divs and labels -->
+                <div class="form-group">
+                    <label for="medicineName">Medicine Name:</label>
+                    <input type="text" id="medicineName"  required>
+                </div>
+                <div class="form-group">
+                    <label for="medicineCode">Medicine Code:</label>
+                    <input type="text" id="medicineCode" >
+                </div>
+                <div class="form-group">
+                    <label for="newQuantity">New Quantity:</label>
+                    <input type="number" id="newQuantity"  min="0" required>
+                </div>
+                <button type="submit">Update Stock Quantity</button> <!-- Changed button text, added type="submit" -->
+            </form>
+        </div>
+    </main>
+
+</body>
+</html>

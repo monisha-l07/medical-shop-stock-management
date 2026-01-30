@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="discount pharmacy.png" type="image/x-icon">
+    <title>Discount Pharmacy - Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+	        background-image: url("pharmacy_counter.jpg");
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px gray;
+            width: 300px;
+        }
+        input[type=text], input[type=password] {
+            width: 90%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid gray;
+            border-radius: 5px;
+            margin: 5px 0;
+        }
+        .button {
+            background-color: royalblue;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: green;
+            transition: 0.3s;
+        }
+    </style>
+    <script>
+         if (localStorage.getItem("username") === null) {
+            localStorage.setItem("username", "admin");
+            localStorage.setItem("password", "1234");
+        }
+
+        function validateLogin(event) {
+            event.preventDefault();
+            
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+
+            var storedUsername = localStorage.getItem("username");
+            var storedPassword = localStorage.getItem("password");
+
+            if (username === storedUsername && password === storedPassword) {
+                sessionStorage.setItem("loggedIn", "true");
+                window.location.href = "medical shop.html";
+            } else {
+                alert("Invalid username or password!");
+            }
+        }
+
+        function forgotPassword() {
+            var newPass = prompt("Enter your new password:");
+            if (newPass !== null && newPass !== "") {
+                localStorage.setItem("password", newPass);
+                alert("Password updated successfully! Use the new password to log in.");
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+            <input type="text" id="username" placeholder="Enter username" required><br>
+            <input type="password" id="password" placeholder="Enter password" required><br>
+            <input type="submit" value="Login" class="button" onclick="validateLogin(event)">
+        </form>
+	<button class="button" onclick="forgotPassword()">Forgot Password?</button>
+    </div>
+</body>
+</html>

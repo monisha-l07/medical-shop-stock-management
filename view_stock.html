@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Stock - Discount Pharmacy</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="newstyles.css">
+    <!-- Favicon -->
+    <link rel="icon" href="discount pharmacy.png" type="image/x-icon">
+    <!-- Consistent Theme Styles -->
+    <style>
+
+        /* Page content wrapper */
+        .page-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            z-index: 1;
+            position: relative;
+            width: 100%;
+        }
+
+        /* Main Heading Style */
+        h2 {
+            color: white; /* Heading above container should be white */
+            font-size: 36px;
+            font-weight: 700;
+            text-align: center;
+            margin: 30px 0 40px 0; /* Adjusted bottom margin */
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            letter-spacing: 1px;
+        }
+
+        /* Search Container Styling */
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px; /* Space between search and table box */
+            width: 100%;
+            max-width: 600px; /* Limit search bar width */
+        }
+
+        .search-container input[type="search"] {
+            flex-grow: 1; /* Allow input to take available space */
+            padding: 10px 15px;
+            font-size: 1rem;
+            border: 1px solid var(--accent);
+            border-right: none; /* Remove border between input and button */
+            border-radius: 8px 0 0 8px; /* Round left corners */
+            background-color: rgba(255, 255, 255, 0.8);
+            color: var(--text);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            outline: none;
+        }
+        .search-container input[type="search"]:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.2);
+            z-index: 2; /* Ensure focus outline is on top */
+            position: relative;
+        }
+
+        .search-container button {
+            padding: 10px 15px;
+            border: 1px solid var(--accent);
+            background-color: var(--light); /* Lighter background */
+            color: var(--primary); /* Blue icon */
+            border-radius: 0 8px 8px 0; /* Round right corners */
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            flex-shrink: 0; /* Prevent button from shrinking */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .search-container button:hover {
+            background-color: var(--accent);
+            color: var(--primary);
+        }
+         .search-container button i {
+            font-size: 1.2rem; /* Ensure icon size is consistent */
+         }
+
+
+        /* Table Container Box Styling (Adapted from .card/.form-container style) */
+        .table-container-box {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 30px 35px; /* Adjusted padding */
+            max-width: 1100px; /* Wider max-width for table */
+            width: 95%;       /* Responsive width */
+            margin: 0 auto 40px auto;
+            z-index: 2;
+            overflow-x: auto; /* Allow horizontal scrolling on small screens */
+        }
+
+        /* Heading inside the box */
+        .table-container-box h2 {
+            color: var(--primary); /* Use primary blue for heading inside box */
+            font-size: 28px; /* Slightly smaller heading inside */
+            margin-top: 0; /* Remove top margin */
+            margin-bottom: 25px;
+            text-shadow: none; /* Remove text shadow for inside heading */
+            text-align: center;
+        }
+
+        /* Table Styling */
+        .table-container-box table {
+            width: 100%;
+            border-collapse: collapse; /* Use collapse for cleaner lines */
+            margin-top: 0; /* Reset margin */
+            background-color: transparent; /* Let container background show */
+            color: var(--text); /* Use theme text color */
+            font-size: 0.95rem;
+        }
+
+        .table-container-box th,
+        .table-container-box td {
+            border: 1px solid var(--table-border); /* Use themed border color */
+            padding: 12px 15px; /* Increased padding */
+            text-align: left; /* Left-align content typically better for tables */
+            vertical-align: middle;
+        }
+         /* Center align specific columns if needed */
+        .table-container-box td:nth-child(3) { /* Example: Center Quantity */
+             text-align: center;
+        }
+
+
+        .table-container-box th {
+            background-color: var(--table-header-bg); /* Theme primary color */
+            color: var(--table-header-text); /* White text */
+            font-weight: 600; /* Bolder headers */
+            text-transform: uppercase; /* Uppercase headers */
+            letter-spacing: 0.5px;
+            text-align: left; /* Match cell alignment */
+        }
+
+        /* Add hover effect to rows */
+        .table-container-box tbody tr:hover {
+             background-color: var(--table-row-hover); /* Subtle hover effect */
+        }
+
+        /* --- Remove styles specifically for Bootstrap classes if they conflict --- */
+        /* Example: Override Bootstrap's default table border if needed */
+        /* .table-bordered th, .table-bordered td { border: 1px solid var(--table-border) !important; } */
+
+
+        /* --- Remove unused styles from original CSS --- */
+         /* .container-box { ... } */
+         /* form input.form-control { ... } */
+         /* form button.btn-success { ... } */
+         /* form button.btn-success:hover { ... } */
+
+    </style>
+</head>
+<body>
+    <!-- Background decorative elements -->
+    <div class="bg-circles">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+    </div>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                 <!-- Updated logo link with image -->
+                <a href="medical shop.html">
+                    <img src="discount pharmacy.png" alt="Discount Pharmacy">
+                    <span>DISCOUNT PHARMACY</span>
+                </a>
+            </div>
+            <div class="nav-links">
+                <a href="medical shop.html">Home</a>
+                <a href="sales_report.html">Reports</a>
+                <a href="expiry_check.html">Expiry</a>
+                <!-- Added Contact link from source theme -->
+            </div>
+            <div class="user-menu" tabindex="0"> <!-- Added tabindex -->
+                <div class="user-icon">
+                    <!-- Added icon -->
+                    <i class="bi bi-person-fill"></i>
+                </div>
+                <div class="dropdown-card">
+                    <!-- Updated logout button -->
+                    <a href="login.html" class="logout-btn">
+                        <i class="bi bi-box-arrow-right"></i>
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Wrap main content -->
+    <main class="page-content">
+        <h2>View Pharmacy Stock</h2> <!-- Main Page Heading -->
+
+        <!-- Themed Search Bar -->
+        <div class="search-container">
+            <form class="d-flex w-100" role="search"> <!-- Use d-flex and w-100 on form itself -->
+                <input class="form-control" type="search" placeholder="Search stock by name or code..." aria-label="Search">
+                <button class="btn" type="submit">
+                    <i class="bi bi-search"></i>
+                </button>
+            </form>
+        </div>
+
+        <!-- Themed Table Container -->
+        <div class="table-container-box"> <!-- Renamed class -->
+            <h2>Current Stock Levels</h2> <!-- Heading inside the container -->
+
+             <!-- Use basic table structure, styling is handled by CSS -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Medicine Name</th>
+                        <th>Medicine Code</th>
+                        <th>Quantity</th>
+                        <th>Expiry Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Paracetamol 500mg Tabs</td> <!-- Example longer name -->
+                        <td>B123</td>
+                        <td>50</td>
+                        <td>2025-12-01</td> <!-- Standard date format -->
+                    </tr>
+                    <tr>
+                        <td>Ibuprofen 200mg Caps</td>
+                        <td>I456</td>
+                        <td>30</td>
+                        <td>2026-01-10</td>
+                    </tr>
+                    <tr>
+                        <td>Amoxicillin 250mg Syrup</td>
+                        <td>A789</td>
+                        <td>25</td>
+                        <td>2025-07-15</td>
+                    </tr>
+                    <!-- Add more rows as needed -->
+                     <tr>
+                        <td>Loratadine 10mg</td>
+                        <td>LORA10</td>
+                        <td>120</td>
+                        <td>2027-05-30</td>
+                    </tr>
+                     <tr>
+                        <td>Salbutamol Inhaler</td>
+                        <td>SALBINH</td>
+                        <td>15</td>
+                        <td>2025-11-01</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Bootstrap JS Bundle (Keep if Bootstrap JS features are ever needed) -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> -->
+</body>
+</html>

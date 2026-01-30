@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en"> <!-- Changed lang to en -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expiry Check - Discount Pharmacy</title> <!-- Updated Title -->
+    <!-- Bootstrap CSS (Keep for layout helpers if needed, though less reliant now) -->
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"> -->
+    <!-- Bootstrap Icons CSS (Required by theme) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <!-- Favicon -->
+    <link rel="icon" href="discount pharmacy.png" type="image/x-icon">
+    <!-- Consistent Theme Styles -->
+    <style>
+        /* --- Blue Color Palette --- */
+        :root {
+            --primary: #1976D2;   /* Primary Blue */
+            --secondary: #64B5F6; /* Lighter Blue */
+            --accent: #BBDEFB;   /* Very Light Blue */
+            --text: #2d3748;     /* Keep Dark Gray */
+            --light: #ffffff;    /* Keep White */
+            /* --- Updated Blue Gradient --- */
+            --bg-gradient: linear-gradient(135deg, #1976D2 0%, #64B5F6 100%);
+            --navbar-bg: rgba(255, 255, 255, 0.95);
+            --card-bg: rgba(255, 255, 255, 0.9); /* Used for content box */
+            --table-border: rgba(187, 222, 251, 0.6);
+            --table-header-bg: var(--primary);
+            --table-header-text: var(--light);
+            --table-row-hover: rgba(187, 222, 251, 0.3);
+            /* --- Status Colors --- */
+            --status-expired-bg: #FEE2E2; /* Light Red */
+            --status-expired-text: #B91C1C; /* Dark Red */
+            --status-warning-bg: #FEF3C7; /* Light Yellow */
+            --status-warning-text: #B45309; /* Dark Yellow/Orange */
+            --status-active-bg: #D1FAE5; /* Light Green */
+            --status-active-text: #047857; /* Dark Green */
+            --status-active-default: var(--text); /* Default text color for active */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text);
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            background-attachment: fixed;
+            /* Removed margin-top: 100px; text-align: center; */
+        }
+
+        /* --- Decorative Background Circles Effect --- */
+        .bg-circles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .circle { position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.08); animation: float 20s infinite ease-in-out alternate; }
+        .circle-1 { width: 300px; height: 300px; top: -100px; left: -100px; animation-duration: 25s; }
+        .circle-2 { width: 400px; height: 400px; bottom: -150px; right: -150px; animation-duration: 30s; animation-delay: 2s; }
+        .circle-3 { width: 200px; height: 200px; top: 25%; right: 15%; animation-duration: 20s; animation-delay: 1s; }
+        @keyframes float { 0% { transform: translateY(0) scale(1); } 100% { transform: translateY(-20px) scale(1.05); } }
+        /* --- End Decorative Background Circles Effect --- */
+
+        /* Navbar */
+        .navbar { background-color: var(--navbar-bg); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); backdrop-filter: blur(5px); border-bottom: 1px solid rgba(255, 255, 255, 0.3); display: flex; align-items: center; padding: 25px 40px; position: sticky; top: 0; z-index: 100; }
+        .logo a { display: flex; align-items: center; text-decoration: none; color: var(--primary); font-weight: 700; font-size: 20px; transition: all 0.3s ease; flex-shrink: 0; }
+        .logo a:hover { transform: scale(1.05); }
+        .logo img { height: 35px; width: 35px; margin-right: 10px; }
+        .nav-links { display: flex; gap: 20px; margin-left: auto; }
+        .nav-links a { text-decoration: none; color: var(--text); font-weight: 500; padding: 8px 16px; border-radius: 30px; transition: all 0.3s ease; position: relative; font-size: 1.1rem; }
+        .nav-links a:after { content: ''; position: absolute; width: 0; height: 2px; bottom: -2px; left: 50%; background: var(--primary); transition: all 0.3s ease; transform: translateX(-50%); }
+        .nav-links a:hover { color: var(--primary); }
+        .nav-links a:hover:after { width: 70%; }
+        /* User Menu */
+        .user-menu { position: relative; margin-left: 20px; }
+        .user-icon { width: 40px; height: 40px; background: var(--bg-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; box-shadow: 0 4px 10px rgba(25, 118, 210, 0.3); transition: all 0.3s ease; }
+        .user-icon i { font-size: 1.3rem; line-height: 1; }
+        .user-icon:hover { transform: scale(1.1); }
+        .dropdown-card { position: absolute; right: 0; top: 55px; background: white; border-radius: 10px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); padding: 10px; min-width: 120px; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s ease; z-index: 110; }
+        .user-menu:hover .dropdown-card, .user-menu:focus-within .dropdown-card { opacity: 1; visibility: visible; transform: translateY(0); }
+        .logout-btn { display: flex; align-items: center; gap: 8px; padding: 10px 15px; color: #e53e3e; text-decoration: none; font-weight: 500; border-radius: 8px; transition: all 0.3s ease; }
+        .logout-btn i { font-size: 1rem; }
+        .logout-btn:hover { background-color: #fed7d7; }
+
+        /* Page content wrapper */
+        .page-content { display: flex; flex-direction: column; align-items: center; padding: 40px 20px; z-index: 1; position: relative; width: 100%; }
+
+        /* Main Heading Style */
+        h2 { color: white; font-size: 36px; font-weight: 700; text-align: center; margin: 30px 0 50px 0; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); letter-spacing: 1px; }
+
+        /* Table Container Box Styling */
+        .table-container-box { background: var(--card-bg); backdrop-filter: blur(10px); border-radius: 20px; box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.5); padding: 30px 35px; max-width: 1100px; width: 95%; margin: 0 auto 40px auto; z-index: 2; overflow-x: auto; }
+
+        /* Heading inside the box */
+        .table-container-box h2 { color: var(--primary); font-size: 28px; margin-top: 0; margin-bottom: 25px; text-shadow: none; text-align: center; }
+
+        /* Table Styling */
+        .table-container-box table { width: 100%; border-collapse: collapse; margin-top: 0; background-color: transparent; color: var(--text); font-size: 0.95rem; }
+        .table-container-box th, .table-container-box td { border: 1px solid var(--table-border); padding: 12px 15px; text-align: left; vertical-align: middle; }
+        .table-container-box th { background-color: var(--table-header-bg); color: var(--table-header-text); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* --- Status Styling --- */
+        .status-cell { /* Style the cell containing the status text */
+             font-weight: 600;
+             text-align: center; /* Center align status text */
+             border-radius: 15px; /* Rounded badge effect */
+             padding: 5px 10px; /* Adjust padding for badge */
+             display: inline-block; /* Make it behave like a badge */
+             min-width: 100px; /* Ensure badge has minimum width */
+        }
+
+        tr.status-expired td { /* Style the whole row */
+            background-color: var(--status-expired-bg);
+             color: var(--status-expired-text); /* Adjust text color for contrast if needed */
+        }
+         td .status-expired { /* Style status text/badge specifically */
+             background-color: var(--status-expired-bg); /* Match row background */
+             color: var(--status-expired-text);
+             border: 1px solid var(--status-expired-text); /* Optional border */
+         }
+
+
+        tr.status-warning td { /* Style the whole row */
+            background-color: var(--status-warning-bg);
+            color: var(--status-warning-text); /* Adjust text color for contrast if needed */
+        }
+         td .status-warning { /* Style status text/badge specifically */
+             background-color: var(--status-warning-bg); /* Match row background */
+             color: var(--status-warning-text);
+             border: 1px solid var(--status-warning-text); /* Optional border */
+         }
+
+
+        td .status-active { /* Style status text/badge specifically */
+            color: var(--status-active-default); /* Use default text color */
+            /* Optionally add a subtle green background/border if desired */
+             /* background-color: var(--status-active-bg); */
+             /* color: var(--status-active-text); */
+             /* border: 1px solid var(--status-active-text); */
+        }
+
+
+        /* Adjust hover effect to override status backgrounds */
+        .table-container-box tbody tr:hover td {
+             background-color: var(--table-row-hover) !important; /* Use !important carefully */
+             color: var(--text) !important; /* Ensure text is readable on hover */
+        }
+        .table-container-box tbody tr:hover .status-cell {
+            /* Reset status badge colors on hover if desired, or keep them */
+            /* Example: Keep status colors on hover */
+             /* background-color: inherit; */
+             /* color: inherit; */
+             /* border-color: inherit; */
+        }
+
+        /* --- Remove unused styles from original CSS --- */
+         /* .container-box { ... } */
+
+    </style>
+</head>
+<body>
+    <!-- Background decorative elements -->
+    <div class="bg-circles">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+    </div>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                 <!-- Updated logo link with image -->
+                <a href="medical shop.html">
+                    <img src="discount pharmacy.png" alt="Discount Pharmacy">
+                    <span>DISCOUNT PHARMACY</span>
+                </a>
+            </div>
+            <div class="nav-links">
+                <a href="medical shop.html">Home</a>
+                <a href="sales_report.html">Reports</a>
+                <a href="expiry_check.html">Expiry</a> <!-- Link already present -->
+            </div>
+            <div class="user-menu" tabindex="0">
+                <div class="user-icon">
+                    <!-- Added icon -->
+                    <i class="bi bi-person-fill"></i>
+                </div>
+                <div class="dropdown-card">
+                    <!-- Updated logout button -->
+                    <a href="login.html" class="logout-btn">
+                        <i class="bi bi-box-arrow-right"></i>
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Wrap main content -->
+    <main class="page-content">
+        <h2>Stock Expiry Check</h2> <!-- Updated H2 text -->
+
+        <!-- Themed Table Container -->
+        <div class="table-container-box">
+            <h2>Expiry Alerts</h2> <!-- Heading inside the container -->
+
+             <!-- Use basic table structure, styling handled by CSS -->
+             <!-- Added custom status classes to TR elements -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Medicine Name</th>
+                        <th>Medicine Code</th>
+                        <th>Expiry Date</th>
+                        <th style="text-align: center;">Status</th> <!-- Center align header -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Active Item -->
+                    <tr class="status-active"> <!-- No specific row color needed for active -->
+                        <td>Paracetamol 500mg</td>
+                        <td>P12345</td>
+                        <td>2025-03-10</td>
+                        <!-- Status cell with specific class -->
+                        <td style="text-align: center;"><span class="status-cell status-active">Active</span></td>
+                    </tr>
+                    <!-- Expired Item -->
+                    <tr class="status-expired"> <!-- Class for row styling -->
+                        <td>Ibuprofen 200mg</td>
+                        <td>I67890</td>
+                        <td>2024-03-15</td>
+                        <td style="text-align: center;"><span class="status-cell status-expired">Expired</span></td>
+                    </tr>
+                    <!-- Warning Item -->
+                    <tr class="status-warning"> <!-- Class for row styling -->
+                        <td>Amoxicillin 250mg</td>
+                        <td>A54321</td>
+                        <td>2024-08-05</td> <!-- Updated date to be 'soon' -->
+                        <td style="text-align: center;"><span class="status-cell status-warning">Expiring Soon</span></td>
+                    </tr>
+                     <!-- Another Active Item -->
+                    <tr class="status-active">
+                        <td>Loratadine 10mg</td>
+                        <td>LORA10</td>
+                        <td>2027-05-30</td>
+                        <td style="text-align: center;"><span class="status-cell status-active">Active</span></td>
+                    </tr>
+                     <!-- Another Warning Item -->
+                     <tr class="status-warning">
+                        <td>Salbutamol Inhaler</td>
+                        <td>SALBINH</td>
+                        <td>2024-10-01</td> <!-- Example: Expiring in few months -->
+                        <td style="text-align: center;"><span class="status-cell status-warning">Expiring Soon</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Bootstrap JS Bundle (Optional) -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> -->
+</body>
+</html>

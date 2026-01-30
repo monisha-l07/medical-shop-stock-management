@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discount Pharmacy - Stock Management</title>
+    <link rel="icon" href="discount pharmacy.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="newstyles.css">
+    <style>
+
+        /* Page content */
+        .page-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            z-index: 1;
+            position: relative;
+        }
+
+        h2 {
+            color: white;
+            font-size: 36px;
+            font-weight: 700;
+            text-align: center;
+            margin: 30px 0 50px 0;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            letter-spacing: 1px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Card styling */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            width: 230px;
+            height: 230px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            text-align: center;
+        }
+
+        /* Card hover overlay */
+        .card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-gradient);
+            opacity: 0;
+            z-index: 0;
+            transition: all 0.4s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(25, 118, 210, 0.3);
+            border-color: transparent;
+        }
+
+        .card:hover:before {
+            opacity: 0.8;
+        }
+
+        .card h3 {
+            color: var(--primary);
+            font-size: 22px;
+            margin-bottom: 15px;
+            transition: all 0.4s ease;
+            z-index: 2;
+            position: relative;
+        }
+
+        .card i {
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin: 10px 0 20px 0;
+            transition: all 0.4s ease;
+            z-index: 2;
+            position: relative;
+        }
+
+        .card:hover h3,
+        .card:hover i {
+            color: white;
+        }
+
+        /* Card background SVG styling - More Visible */
+        .card .card-bg {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.08; /* Increased visibility */
+            transition: all 0.4s ease;
+            background-size: 60%;
+            background-position: bottom 10px right 10px;
+            background-repeat: no-repeat;
+        }
+
+        /* Card background SVG hide on hover */
+        .card:hover .card-bg {
+            opacity: 0;
+            transform: scale(1.1);
+        }
+
+
+        /* --- Updated SVG Backgrounds (Blue) --- */
+        .add-stock .card-bg { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%231976D2"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>'); }
+        .view-stock .card-bg { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%231976D2"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg>'); }
+        .update-stock .card-bg { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%231976D2"><path d="M14 2h-4c-1.1 0-1.99.9-1.99 2L8 20c0 1.1.89 2 1.99 2h4c1.1 0 1.99-.9 1.99-2L16 4c0-1.1-.89-2-1.99-2zM12 16h-2V8h2v8z"/></svg>'); }
+        .billing .card-bg { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%231976D2"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm-1 14H5c-.55 0-1-.45-1-1v-5h16v5c0 .55-.45 1-1 1zm1-10H4V6h16v2z"/></svg>'); }
+        /* --- End Updated SVG Backgrounds --- */
+
+    </style>
+</head>
+
+<body>
+    <!-- Background decorative elements -->
+    <div class="bg-circles">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+    </div>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <!-- Assuming medical shop.html is the intended home -->
+                <a href="medical shop.html">
+                <img src="discount pharmacy.png" alt="Discount Pharmacy">
+                <span>DISCOUNT PHARMACY</span>
+                </a>
+            </div>
+            <div class="nav-links">
+                <a href="medical shop.html">Home</a>
+                <a href="sales_report.html">Reports</a>
+                <a href="expiry_check.html">Expiry</a>
+            </div>
+            <div class="user-menu">
+                 <!-- --- Replaced JD with Login Icon --- -->
+                <div class="user-icon">
+                    <i class="bi bi-person-fill"></i>
+                </div>
+                <div class="dropdown-card">
+                    <!-- This dropdown might now represent user settings or profile if logged in -->
+                    <!-- Or maybe the icon should change to person icon if logged in? -->
+                    <!-- For now, keeping the logout button as an example -->
+                    <a href="login.html" class="logout-btn">
+                        <i class="bi bi-box-arrow-right"></i>
+                        Logout
+                    </a>
+                    <!-- You might add other links here like "Profile", "Settings" etc. -->
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="page-content">
+        <h2>Pharmacy Stock Management</h2>
+        <div class="container">
+            <div class="card add-stock" onclick="location.href='add_stock.html'">
+                <i class="bi bi-plus-circle"></i>
+                <h3>Add Stock</h3>
+                <div class="card-bg"></div>
+            </div>
+            <div class="card view-stock" onclick="location.href='view_stock.html'">
+                <i class="bi bi-eye"></i>
+                <h3>View Stock</h3>
+                <div class="card-bg"></div>
+            </div>
+            <div class="card update-stock" onclick="location.href='update_stock.html'">
+                <i class="bi bi-pencil"></i>
+                <h3>Update Stock</h3>
+                <div class="card-bg"></div>
+            </div>
+            <div class="card billing" onclick="location.href='billing.html'">
+                <i class="bi bi-credit-card"></i>
+                <h3>Billing</h3>
+                <div class="card-bg"></div>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>
