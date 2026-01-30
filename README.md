@@ -19,9 +19,10 @@ This project demonstrates practical application of frontend design and backend l
 - **C Programming** – Core logic and data handling
 
 ## Project Structure
+```text
 medical-shop-stock-management/
 │
-├── medical shop.html 
+├── medical shop.html
 ├── login.html
 ├── add_stock.html
 ├── update_stock.html
@@ -32,8 +33,9 @@ medical-shop-stock-management/
 ├── newstyles.css
 ├── medical.c
 └── images/
-├── logo.png
-└── background images
+    ├── logo.png
+    └── background images
+```
 
 ## How to Run
 1. Download or clone the repository.
